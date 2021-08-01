@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "929361253391",
+    "project_id": "contact-tracing-app-a95c2",
+    "storage_bucket": "contact-tracing-app-a95c2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:929361253391:android:8f162f83fd639cef8aff7a",
+        "android_client_info": {
+          "package_name": "com.ctracingdapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "929361253391-j732hbf7idpbs5vbkn3j68je83q7cm9n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBovtMuSRTCtc7TfjyWBCKxdHVRA8imqjM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "929361253391-j732hbf7idpbs5vbkn3j68je83q7cm9n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:929361253391:android:9a4a7d9199318eb68aff7a",
+        "android_client_info": {
+          "package_name": "com.dev.ctapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "929361253391-j732hbf7idpbs5vbkn3j68je83q7cm9n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBovtMuSRTCtc7TfjyWBCKxdHVRA8imqjM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "929361253391-j732hbf7idpbs5vbkn3j68je83q7cm9n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
