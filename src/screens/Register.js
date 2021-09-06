@@ -12,7 +12,8 @@ import {
   PermissionsAndroid,
   TextInput,
   ToastAndroid as Toast,
-  Image
+  Image,
+  ActivityIndicator
 } from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { material } from 'react-native-typography'
@@ -21,27 +22,31 @@ import {Picker} from '@react-native-picker/picker';
 
 
 const Register = ({navigation}) => {
-    const [b_id,setbid]=useState("84:10:0D:FA:87:33")
+    const [b_id,setbid]=useState("78:20:0D:F1:82:20")
     const [cstatus,setcstatus]=useState(false)
+    const [isLoading,setIsloading]=useState(false)
     // const [selectedLanguage, setSelectedLanguage] = useState();
     function onClickSubmit (){
-        // console.log(b_id,cstatus)
+        console.log(b_id,cstatus)
+        setIsloading(true)
         // {
         //     "b_id":"12345678",
         //     "cstatus":"true"
         // }
-        // axios.post('http://192.168.43.57:5000/Register', {
-        //     b_id,
-        //     cstatus
-        //   })
-        //   .then(function (response) {
-        //     console.log("success")
+        axios.post('http://192.168.43.57:5000/Register', {
+            b_id,
+            cstatus
+          })
+          .then(function (response) {
+            setIsloading(false)
+            console.log("success")
+            navigation.navigate('Home')
 
-        //     console.log(response);
-        //   })
-        //   .catch(function (error) {
-        //     console.log(error);
-        //   });
+            // console.log(response);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
           
         //   axios.post('https://reqres.in/api/users/',{
         //     "name": "morpheus",
@@ -56,10 +61,21 @@ const Register = ({navigation}) => {
         //     console.log(error);
         //   });
 // console.log(navigation)
-navigation.navigate('Home')
     }
+function showActivity(){
+    return(
+     <View style = {styles.overlayLoadingContainer}>
+    
+         <ActivityIndicator 
+                     size={50} color={'yellow'}/>
+     </View>
+     
+      )
+    } 
 
   return (
+
+    
     <ScrollView
     //  style={{flex: 1}}
      contentContainerStyle={{ flexGrow: 1 }}
@@ -67,7 +83,9 @@ navigation.navigate('Home')
     <SafeAreaView
     style={styles.container}
     >
-
+    {isLoading ?
+          showActivity()
+          :null}
     <View
     style={styles.registerView}
     >
@@ -187,7 +205,19 @@ const styles = StyleSheet.create({
     width:'100%',
     borderWidth:0.2,
     marginBottom:10,
-  }
+  },
+    overlayLoadingContainer:{
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    right: 0,
+    left: 0,
+    justifyContent:'center',
+    alignItems:'center',
+    zIndex: 1,
+    opacity: 0.4,
+    backgroundColor: 'black'
+ },
 
 });
 

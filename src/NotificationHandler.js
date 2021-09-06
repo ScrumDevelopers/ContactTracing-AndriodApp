@@ -4,17 +4,17 @@ class NotificationHandler {
   onNotification(notification) {
     console.log('NotificationHandler:', notification);
 
-    if (typeof this._onNotification === 'function') {
-      this._onNotification(notification);
-    }
+    // if (typeof this._onNotification === 'function') {
+    //   this._onNotification(notification);
+    // }
   }
 
   onRegister(token) {
     console.log('NotificationHandler:', token);
 
-    if (typeof this._onRegister === 'function') {
-      this._onRegister(token);
-    }
+    // if (typeof this._onRegister === 'function') {
+    //   this._onRegister(token);
+    // }
   }
 
   onAction(notification) {
@@ -51,17 +51,17 @@ PushNotification.configure({
   onNotification: handler.onNotification.bind(handler),
 
   // (optional) Called when Action is pressed (Android)
-  onAction: handler.onAction.bind(handler),
+  // onAction: handler.onAction.bind(handler),
 
   // (optional) Called when the user fails to register for remote notifications. Typically occurs when APNS is having issues, or the device is a simulator. (iOS)
-  onRegistrationError: handler.onRegistrationError.bind(handler),
+  // onRegistrationError: handler.onRegistrationError.bind(handler),
 
   // IOS ONLY (optional): default: all - Permissions to register.
-  permissions: {
-    alert: true,
-    badge: true,
-    sound: true,
-  },
+  // permissions: {
+  //   alert: true,
+  //   badge: true,
+  //   sound: true,
+  // },
 
   // Should the initial notification be popped automatically
   // default: true
@@ -74,7 +74,7 @@ PushNotification.configure({
    */
   requestPermissions: true,
 //   requestPermissions: Platform.OS === 'Android',
-
+ senderID: '929361253391',
 });
 
 export default handler;
