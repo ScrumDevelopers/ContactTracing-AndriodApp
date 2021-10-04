@@ -15,21 +15,21 @@ import {
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { material } from 'react-native-typography'
-
+import AppColor from '../Assets/AppColor';
 
 const Toolbar = () => {
   
   return (
     <View
-    style={styles.container}
+    style={[styles.container,{backgroundColor:AppColor.cardBlue}]}
     >
         <Text
         style={{...material.subheading}}
         >
-            Contact Tracing App
+            BlockTrace
         </Text>
 
-        <Icon.Button
+        {/* <Icon.Button
               name={"user-circle-o"}
               size={30}
               color={'grey'}
@@ -39,7 +39,7 @@ const Toolbar = () => {
               }}
               backgroundColor={'transparent'}
               underlayColor="transparent" 
-              />
+              /> */}
     </View>
   );
 };

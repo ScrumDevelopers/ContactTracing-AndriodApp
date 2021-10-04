@@ -202,7 +202,7 @@ dependencies {
 
 
     //remove
-    implementation project(":rn-contact-tracing")
+    // implementation project(":rn-contact-tracing")
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
       exclude group:'com.facebook.fbjni'
