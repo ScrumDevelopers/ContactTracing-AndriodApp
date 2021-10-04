@@ -13,13 +13,14 @@ import {
   TextInput,
   ToastAndroid as Toast,
   Image,
-  ActivityIndicator
+  ActivityIndicator,
+  Pressable
 } from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { material } from 'react-native-typography'
 const axios = require('axios');
 import {Picker} from '@react-native-picker/picker';
-
+import AppColor from '../Assets/AppColor'
 
 const Register = ({navigation}) => {
     const [b_id,setbid]=useState("78:20:0D:F1:82:20")
@@ -74,8 +75,8 @@ function showActivity(){
     } 
 
   return (
+<>
 
-    
     <ScrollView
     //  style={{flex: 1}}
      contentContainerStyle={{ flexGrow: 1 }}
@@ -83,9 +84,15 @@ function showActivity(){
     <SafeAreaView
     style={styles.container}
     >
+      <Image
+                style={styles.topImage}
+                source={require('../Assets/blkchn.png')}
+                /> 
     {isLoading ?
           showActivity()
           :null}
+
+     
     <View
     style={styles.registerView}
     >
@@ -94,26 +101,53 @@ function showActivity(){
                 style={styles.logo}
                 source={require('../Assets/appLogo.png')}
                 />
-            <Text
-            style={{fontSize:20}}
+
+            <View
+            style={{
+              flexDirection:'row',
+              marginTop:hp(1)
+            }}
             >
-                
-                Contact Tracing DApp
-            </Text>
+                <Text
+                style={{...material.headline,fontWeight:'bold',color:AppColor.nameViolet}}
+                >
+                    
+                    Block 
+                </Text>
+
+                <Text
+                style={{...material.headline,color:AppColor.namePink}}
+                >
+                    
+                Tracer
+                </Text>
+            </View>
+            
             </View>
 
             <View style={styles.inputView}>
 
-                <Text>
-                Your device’s bluetooth ID is your username
-                </Text>
-                <TextInput
-                style={styles.textInput}
-                onChangeText={setbid}
-                value={b_id}
-                /> 
+                <View
+                // style={{}}
+                >
+                    <Text
+                    style={{...material.subheading}}
+                    >
+                    Bluetooth ID
+                    </Text>
 
-                <Text>
+                    <TextInput
+                    style={styles.textInput}
+                    onChangeText={setbid}
+                    value={b_id}
+                    /> 
+
+                </View>
+                
+
+                <Text
+                style={{...material.subheading}}                
+                >
                 Enter Your Covid Status
                 </Text>
                 {/* <TextInput
@@ -136,13 +170,21 @@ function showActivity(){
 
                 </View>
                 
+                <Pressable 
+                onPress={()=>{onClickSubmit()}}
+                style={styles.button}                
+                >
+                  <Text
+                  style={{...material.subheading,fontWeight:'bold',color:"white"}}
+                  >Submit</Text>
+                </Pressable>
 
-                <Button
+                {/* <Button
                 onPress={()=>{onClickSubmit()}}
                 title="Submit"
                 style={styles.button}
                 color="grey"
-                /> 
+                />  */}
                 
                 {/* <Button
                 onPress={()=>{
@@ -156,19 +198,29 @@ function showActivity(){
                 /> */}
             </View>
 
+                
+              
            
     </View>
     
+  
         
     </SafeAreaView>
+    <Image
+      style={styles.bottomImage}
+      source={require('../Assets/p1.png')}
+      />
     </ScrollView>
+    
+      </>
   );
 };
 
 const styles = StyleSheet.create({
 
   container:{
-        flex:1
+        flex:1,
+        backgroundColor:AppColor.backgroundBlue
     },
   registerView:{
     flex:1,
@@ -176,18 +228,27 @@ const styles = StyleSheet.create({
       justifyContent: 'center'  
     },
   textInput:{
+    backgroundColor:'white',
       width:'100%',
-      borderWidth:0.2,
+      height:hp(7),
+      // borderWidth:0.2,
       marginBottom:10,
-      paddingHorizontal:10
+      paddingHorizontal:wp(5),
+      borderRadius:30
   },
   inputView:{
-      paddingHorizontal:'3%',
+    // flex:1,
+    // flexWrap: "wrap",   
+    width:wp(85),
+    alignSelf:'center',
+      // paddingHorizontal:'3%',
+      // alignContent: 'center',
+      // justifyContent: 'center'
     //   backgroundColor:'red'
   },
   logo:{
-      width:150,
-      height:150,
+      width:100,
+      height:100,
     //   borderRadius:50,
     //   color:'red'
   },
@@ -198,13 +259,24 @@ const styles = StyleSheet.create({
     //   flexDirection:'column'
   },
   button:{
-      width: 40,
-      marginBottom:40
+    backgroundColor:AppColor.ButtonPink,
+    alignItems:'center',
+    alignSelf:'center',
+      width: wp(40),
+      padding:wp(2),
+      marginBottom:40,
+      borderRadius:25,
+      elevation: 5,
+
   },
   pickerView:{
     width:'100%',
-    borderWidth:0.2,
+          height:hp(7),
+    justifyContent: 'center',
+    // borderWidth:0.2,
     marginBottom:10,
+    backgroundColor:'white',
+    borderRadius:25
   },
     overlayLoadingContainer:{
     position: 'absolute',
@@ -218,6 +290,31 @@ const styles = StyleSheet.create({
     opacity: 0.4,
     backgroundColor: 'black'
  },
+ bottomImage:{
+   width:wp(55),
+  //  height:hp(20),
+  position: 'absolute',
+  // top: 0,
+  bottom: wp(-6),
+  right: 0,
+  resizeMode: 'contain',
+  // aspectRatio: 1, // Your aspect ratio
+
+  // left: 0,
+ },
+ topImage:{
+  width:wp(30),
+  // height:hp(30),
+
+  aspectRatio: 1, // Your aspect ratio
+ position: 'absolute',
+ top: 0,
+ resizeMode: 'contain',
+left:0
+//  bottom: 0,
+//  right: 0,
+//  left:wp(-20),
+}
 
 });
 
