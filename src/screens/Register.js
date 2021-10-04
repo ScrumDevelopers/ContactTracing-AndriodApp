@@ -34,20 +34,21 @@ const Register = ({navigation}) => {
         //     "b_id":"12345678",
         //     "cstatus":"true"
         // }
-        axios.post('http://192.168.43.57:5000/Register', {
-            b_id,
-            cstatus
-          })
-          .then(function (response) {
+        
+        // axios.post('http://192.168.43.57:5000/Register', {
+        //     b_id,
+        //     cstatus
+        //   })
+        //   .then(function (response) {
             setIsloading(false)
             console.log("success")
             navigation.navigate('Home')
 
             // console.log(response);
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
+          // })
+          // .catch(function (error) {
+          //   console.log(error);
+          // });
           
         //   axios.post('https://reqres.in/api/users/',{
         //     "name": "morpheus",

@@ -14,7 +14,7 @@ import kjd.reactnative.bluetooth.RNBluetoothClassicPackage;
 import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
 
 //remove
-import com.wix.specialble.SpecialBlePackage;
+// import com.wix.specialble.SpecialBlePackage;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -34,7 +34,7 @@ public class MainApplication extends Application implements ReactApplication {
         protected List<ReactPackage> getPackages() {
           @SuppressWarnings("UnnecessaryLocalVariable")
           List<ReactPackage> packages = new PackageList(this).getPackages();
-          packages.add(new SpecialBlePackage());
+          // packages.add(new SpecialBlePackage());
           // packages.add(new ReactNativePushNotificationPackage());
           // packages.add(new RNBluetoothClassicPackage());
           // Packages that cannot be autolinked yet can be added manually here, for example:

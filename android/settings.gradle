@@ -5,8 +5,8 @@ include ':react-native-bluetooth-classic'
 project(':react-native-bluetooth-classic').projectDir = new File(rootProject.projectDir,'../node_modules/react-native-bluetooth-classic/android')
 
 //remove
-include ':rn-contact-tracing'
-project(':rn-contact-tracing').projectDir = new File(rootProject.projectDir, '../node_modules/rn-contact-tracing/lib/android')
+// include ':rn-contact-tracing'
+// project(':rn-contact-tracing').projectDir = new File(rootProject.projectDir, '../node_modules/rn-contact-tracing/lib/android')
 
 
 include ':react-native-push-notification'
