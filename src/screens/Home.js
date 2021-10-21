@@ -10,6 +10,9 @@ import {
   Button,
   Alert,
   PermissionsAndroid,
+  Pressable,
+  Image,
+  ImageBackground,
   ToastAndroid as Toast
 } from 'react-native';
 import NotifService from '../notifService';
@@ -24,6 +27,10 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { material } from 'react-native-typography';
 import AppColor from '../Assets/AppColor';
+import Modal from "react-native-modal";
+import DocumentPicker from 'react-native-document-picker';
+
+
 
 function onRegister(token) {
   // this.setState({registerToken: token.token, fcmRegistered: true});
@@ -32,29 +39,35 @@ function onRegister(token) {
 
 function onNotif(notif) {
   // Alert.alert(notif.title, notif.message);
-  console.log(notif)
+  console.log("Home",notif)
 }
 
 const Home = () => {
-  var notif
-  useEffect(() => {
-    notif = new NotifService(onRegister, onNotif);
-  })
+  // var notif
+  // useEffect(() => {
+  //   notif = new NotifService(onRegister, onNotif);
+  // })
 
   // const isDarkMode = useColorScheme() === 'dark';
   const [state, setState] = useState('')
   const [discovering, setDiscovering] = useState(false);
   const [btdata, setbtdata] = useState([]);
   const [status, setStatus] = useState(false)
+  const [ pushnoti, setPushnoti] = useState(false)
+  // const [ notif, setNotif] = useState(new NotifService(onRegister, onNotif))
+  const [multipleFile, setMultipleFile] = useState([]);
 
-  const pushnoti = true;//false;
+  // const pushnoti = true;//false;
   const netconn = true;//false;
   const blconn = true;//false;
   // useEffect(async() =>{
 
 
   // })
+  // useEffect(() => {
+  //   notif = new NotifService(onRegister, onNotif);
 
+  // },[notif])
 
   async function requestAccessFineLocationPermission() {
     const granted = await PermissionsAndroid.request(
@@ -164,9 +177,78 @@ const Home = () => {
     //     console.log(error)
     // }
   }
+
+  const selectMultipleFile = async () => {
+    //Opening Document Picker for selection of multiple file
+    try {
+      const results = await DocumentPicker.pickMultiple({
+        type: [DocumentPicker.types.images],
+        //There can me more options as well find above
+      });
+      for (const res of results) {
+        //Printing the log realted to the file
+        console.log('res : ' + JSON.stringify(res));
+        console.log('URI : ' + res.uri);
+        console.log('Type : ' + res.type);
+        console.log('File Name : ' + res.name);
+        console.log('File Size : ' + res.size);
+      }
+      //Setting the state to show multiple file attributes
+      setMultipleFile(results);
+      onClickUpdate()
+    } catch (err) {
+      //Handling any exception (If any)
+      if (DocumentPicker.isCancel(err)) {
+        //If user canceled the document selection
+        alert('Canceled from multiple doc picker');
+      } else {
+        //For Unknown Error
+        alert('Unknown Error: ' + JSON.stringify(err));
+        throw err;
+      }
+    }
+  };
+function uriToBlob (uri){
+    return new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.onload = function() {
+        // return the blob
+        resolve(xhr.response);
+      };
+      
+      xhr.onerror = function() {
+        // something went wrong
+        reject(new Error('uriToBlob failed'));
+      };
+      // this helps us get a blob
+      xhr.responseType = 'blob';
+      xhr.open('GET', uri, true);
+      
+      xhr.send(null);
+    });
+  }
+
+  async function upload(){
+    const formData = new FormData();
+// formData.append('data', JSON.stringify(data));
+    var blb = await uriToBlob(multipleFile[0].uri)
+    console.log(blb)
+
+    // const storage = getStorage();
+    // const storageRef = ref(storage, 'some-child');
+    
+
+    const reference = storage().ref(multipleFile[0].name);
+    reference.put(blb).then((res)=>{
+          console.log(res);
+        });
+      }
+
   function onClickUpdate() {
+    // notif.localNotif() 
     var s = status ? " Negative" : " Positive"
     var title = "Do you want to change your covid Status to" + s
+
     Alert.alert(
       "Update Status",
       title,
@@ -183,6 +265,8 @@ const Home = () => {
             )
               .then(function (response) {
                 Alert.alert("Your Covid Status has been changed Successfully")
+                toggleModal()
+                setPushnoti(true)
                 setStatus(!status);
               })
               .catch(function (error) {
@@ -194,7 +278,7 @@ const Home = () => {
         },
         {
           text: "Cancel",
-          onPress: () => Alert.alert("Cancel Pressed"),
+          // onPress: () => Alert.alert("Cancel Pressed"),
           style: "cancel",
         },
       ],
@@ -207,9 +291,41 @@ const Home = () => {
       }
     );
   }
+  const [isModalVisible, setModalVisible] = useState(false);
+
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+  };
 
   return (
     <>
+    <View style={{ flex: 1 }}>
+      {/* <Button title="Show modal" onPress={toggleModal} /> */}
+
+      <Modal 
+      isVisible={isModalVisible}
+      onBackButtonPress={()=>{
+      toggleModal()
+
+      }}
+      >
+        <View style={{ height:hp(50) , backgroundColor:'white',padding:wp(5)}}>
+          {/* <Text>Hello!</Text> */}
+          <Text
+                style={{...material.headline}}
+                >
+                    Update Your covid Status
+          </Text>
+
+          <Text
+                style={{...material.subheading,marginTop:hp(2)}}
+                >
+                    Upload your covid test report
+                </Text>
+          <Button title="Upload" onPress={()=>{selectMultipleFile()}} />
+        </View>
+      </Modal>
+    </View>
       <ScrollView
         contentContainerStyle={{ flexGrow: 1 }}
         //  contentContainerStyle={{ flexGrow: 1 }}
@@ -221,7 +337,7 @@ const Home = () => {
         <SafeAreaView
           style={styles.container}
         >
-           {status ? 
+           {pushnoti ? 
             <View
               style={[styles.statusView, { backgroundColor: AppColor.BackgroundRed, borderRadius: 10 }]}
             >
@@ -249,7 +365,7 @@ const Home = () => {
                 You Are Safe !
               </Text>
               <Text
-                style={[material.caption, { textAlign: 'center' }]}
+                style={[material.body1, { textAlign: 'center' }]}
               // { fontSize: 12, textAlign: 'center' }}
               >
                 All persons who were in your contacts recently are covid free.
@@ -294,7 +410,7 @@ const Home = () => {
               Your Status: {status ? <Text style={[material.subheading,{color:AppColor.textRed}]}>Positive</Text> : <Text style={material.subheading}>Negative</Text> }
             </Text>
             {/* <View style={{borderRadius:30}}> */}
-            <Button
+            {/* <Button
               onPress={() => {
                 onClickUpdate()
               }}
@@ -302,39 +418,80 @@ const Home = () => {
               style={styles.button}
               // style= {[{borderRadius:30}]}
               color={AppColor.namePink}
-            />
+            /> */}
+              <Pressable 
+                onPress={()=>{
+                  
+                  // onClickUpdate()
+                  toggleModal()
+                }}
+                style={styles.button}                
+                >
+                  <Text
+                  style={{...material.subheading,fontWeight:'bold',color:"white"}}
+                  >Update Status</Text>
+                </Pressable>
             {/* </View> */}
           </View>
 
           {/* <View
             style={styles.guideView}
           > */}
-          <Text
-            style={[material.title, { textAlign: 'center', marginBottom: hp(0.5) }]}
-          // { fontSize: 20, marginBottom: hp(0.5) }}
+          <View
+          style={styles.guideView}
           >
-            Precautions
-          </Text>
-          <Text
-            style={[material.caption, {}]}
-          // { fontSize: 12 }}
-          >
-            {`\u2022  `}
-            Maintain a safe distance from others (at least 1 m), even if they don’t appear to be sick.
-            {`\n\u2022  `}
-            Wear a mask in public, especially indoors or when physical distancing is not possible.
-            {`\n\u2022`}
-            Choose open, well-ventilated spaces over closed ones. Open a window, if indoors.
-            {`\n\u2022  `}
-            Clean your hands often. Use soap and water, or an alcohol-based hand rub.
-            {`\n\u2022  `}
-            Get vaccinated when it’s your turn. Follow local guidance about vaccination.
-            {`\n\u2022  `}
-            Cover your nose and mouth with your bent elbow or a tissue when you cough or sneeze.
-            {`\n\u2022  `}
-            Stay home if you feel unwell.
+          <ImageBackground
+          
+            style={styles.bottomImage}
+            source={require('../Assets/plus.png')}
+            >
+           </ImageBackground>
 
-          </Text>
+                <View
+                // style={{opacity:1}}
+
+                >
+                  {/* <Image
+            style={styles.bottomImage}
+            source={require('../Assets/plus.png')}
+            /> */}
+                <Text
+                    style={[material.title, { textAlign: 'center', marginBottom: hp(0.5) }]}
+                  // { fontSize: 20, marginBottom: hp(0.5) }}
+                  >
+                    Precautions
+                  </Text>
+
+                  <Text
+                    style={[material.body1, {}]}
+                  // { fontSize: 12 }}
+                  >
+                    {`\u2022  `}
+                    Maintain a safe distance from others (at least 1 m), even if they don’t appear to be sick.
+                    {`\n\u2022  `}
+                    Wear a mask in public, especially indoors or when physical distancing is not possible.
+                    {`\n\u2022`}
+                    Choose open, well-ventilated spaces over closed ones. Open a window, if indoors.
+                    {`\n\u2022  `}
+                    Clean your hands often. Use soap and water, or an alcohol-based hand rub.
+                    {`\n\u2022  `}
+                    Get vaccinated when it’s your turn. Follow local guidance about vaccination.
+                    {`\n\u2022  `}
+                    Cover your nose and mouth with your bent elbow or a tissue when you cough or sneeze.
+                    {`\n\u2022  `}
+                    Stay home if you feel unwell.
+
+                  </Text>
+                </View>
+       
+
+         
+          
+        
+
+          </View>
+          
+         
           {/* </View> */}
           {/* <PushController/> */}
         </SafeAreaView>
@@ -382,11 +539,11 @@ const styles = StyleSheet.create({
 
   },
   guideView: {
-    height: hp("40%"),
-    backgroundColor: '#D2D2D2',
+    // height: hp("40%"),
+    // backgroundColor: '#D2D2D2',
     // justifyContent: 'center',
-    alignItems: 'center',
-    padding: wp(2)
+    // alignItems: 'center',
+    // padding: wp(2)
   },
   circleR: {
     width: 11,
@@ -399,7 +556,48 @@ const styles = StyleSheet.create({
     height: 11,
     borderRadius: 11 / 2,
     backgroundColor: AppColor.textGreen,
-  }
+  },
+  button:{
+    backgroundColor:AppColor.ButtonPink,
+    alignItems:'center',
+    alignSelf:'center',
+      width: wp(40),
+      padding:wp(2),
+      borderRadius:25,
+      elevation: 5,
+
+  },
+  bottomImage:{
+    // width:wp(70),
+  //  //  height:hp(20),
+  //  position: 'absolute',
+  //  top:0,
+  // //  bottom: 0,
+  //  right: 0,
+  //  resizeMode: 'contain',
+  //  opacity:0.4,
+  //  aspectRatio: 1, // Your aspect ratio
+ 
+   // left: 0,
+  },
+  bottomImage:{
+    width:wp(70),
+   //  height:hp(20),
+   position: 'absolute',
+  //  alignSelf: 'flex-start',
+  //  alignSelf: 'flex-end',
+   top:hp(5),
+  //  bottom: 0,
+  // alignSelf:'center',
+  left:wp(10),
+   right: 0,
+  // zIndex:-1,
+   resizeMode: 'contain',
+   opacity:0.15,
+   aspectRatio: 1, // Your aspect ratio
+ 
+   // left: 0,
+  },
   // button:{
   //   marginTop:10
   // }

@@ -23,12 +23,30 @@ const Toolbar = () => {
     <View
     style={[styles.container,{backgroundColor:AppColor.cardBlue}]}
     >
-        <Text
+        {/* <Text
         style={{...material.subheading}}
         >
             BlockTrace
-        </Text>
+        </Text> */}
+        <View
+        style={styles.headingView}
+        >
+        <Text
+                style={{...material.headline,fontWeight:'bold',color:AppColor.nameViolet}}
+                >
+                    
+                    Block 
+                </Text>
 
+                <Text
+                style={{...material.headline,color:AppColor.namePink}}
+                >
+                    
+                Tracer
+                </Text>
+
+        </View>
+              
         {/* <Icon.Button
               name={"user-circle-o"}
               size={30}
@@ -53,6 +71,10 @@ container:{
     justifyContent: 'space-between',
     paddingHorizontal:wp('1'),
     backgroundColor:'#D2D2D2',
+},
+headingView:{
+  flexDirection:'row',
+  marginHorizontal:wp(3)
 }
 });
 

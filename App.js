@@ -33,10 +33,24 @@ import Routes from './src/routes'
 import RNBluetoothClassic, {
   BluetoothDevice
 } from 'react-native-bluetooth-classic';
+import NotifService from './src/notifService';
 
 import Register from './src/screens/Register'
+function onRegister(token) {
+  // this.setState({registerToken: token.token, fcmRegistered: true});
+  console.log(token)
+}
 
+function onNotif(notif) {
+  // Alert.alert(notif.title, notif.message);
+  console.log(notif)
+}
 const App = () => {
+  var notif
+  useEffect(() => {
+    notif = new NotifService(onRegister, onNotif);
+  })
+
   const isDarkMode = useColorScheme() === 'dark';
   const [state,setState] = useState('')
   const [discovering,setDiscovering] = useState(false);

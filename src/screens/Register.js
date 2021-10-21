@@ -21,8 +21,12 @@ import { material } from 'react-native-typography'
 const axios = require('axios');
 import {Picker} from '@react-native-picker/picker';
 import AppColor from '../Assets/AppColor'
+import NotifService from '../notifService';
 
 const Register = ({navigation}) => {
+ 
+
+
     const [b_id,setbid]=useState("78:20:0D:F1:82:20")
     const [cstatus,setcstatus]=useState(false)
     const [isLoading,setIsloading]=useState(false)
@@ -35,20 +39,20 @@ const Register = ({navigation}) => {
         //     "cstatus":"true"
         // }
         
-        // axios.post('http://192.168.43.57:5000/Register', {
-        //     b_id,
-        //     cstatus
-        //   })
-        //   .then(function (response) {
+        axios.post('http://192.168.43.57:5000/Register', {
+            b_id,
+            cstatus
+          })
+          .then(function (response) {
             setIsloading(false)
             console.log("success")
             navigation.navigate('Home')
 
-            // console.log(response);
-          // })
-          // .catch(function (error) {
-          //   console.log(error);
-          // });
+            console.log(response);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
           
         //   axios.post('https://reqres.in/api/users/',{
         //     "name": "morpheus",
@@ -287,7 +291,7 @@ const styles = StyleSheet.create({
     left: 0,
     justifyContent:'center',
     alignItems:'center',
-    zIndex: 1,
+    zIndex: 2,
     opacity: 0.4,
     backgroundColor: 'black'
  },
@@ -299,6 +303,7 @@ const styles = StyleSheet.create({
   bottom: wp(-6),
   right: 0,
   resizeMode: 'contain',
+  // zIndex:-1
   // aspectRatio: 1, // Your aspect ratio
 
   // left: 0,

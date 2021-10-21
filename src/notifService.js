@@ -86,8 +86,8 @@ export default class NotifService {
       // channelId: soundName ? 'sound-channel-id' : 'default-channel-id',
       ticker: 'My Notification Ticker', // (optional)
       autoCancel: true, // (optional) default: true
-      largeIcon: 'ic_launcher', // (optional) default: "ic_launcher"
-      smallIcon: 'ic_notification', // (optional) default: "ic_notification" with fallback for "ic_launcher"
+      // largeIcon: 'ic_launcher', // (optional) default: "ic_launcher"
+      // smallIcon: 'ic_notification', // (optional) default: "ic_notification" with fallback for "ic_launcher"
       bigText: 'A person who was in your contact recently, has updated their covid status as positive.', // (optional) default: "message" prop
       // subText: 'This is a subText', // (optional) default: none
       color: 'red', // (optional) default: system default
