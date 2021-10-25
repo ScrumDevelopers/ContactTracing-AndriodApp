@@ -24,9 +24,10 @@ import RNBluetoothClassic, {
 const axios = require('axios');
 import Toolbar from '../components/Toolbar'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/Entypo';
 import { material } from 'react-native-typography';
 import AppColor from '../Assets/AppColor';
+import config from '../Assets/config';
 import Modal from "react-native-modal";
 import DocumentPicker from 'react-native-document-picker';
 
@@ -39,7 +40,7 @@ function onRegister(token) {
 
 function onNotif(notif) {
   // Alert.alert(notif.title, notif.message);
-  console.log("Home",notif)
+  console.log("Home", notif)
 }
 
 const Home = () => {
@@ -53,7 +54,7 @@ const Home = () => {
   const [discovering, setDiscovering] = useState(false);
   const [btdata, setbtdata] = useState([]);
   const [status, setStatus] = useState(false)
-  const [ pushnoti, setPushnoti] = useState(false)
+  const [pushnoti, setPushnoti] = useState(false)
   // const [ notif, setNotif] = useState(new NotifService(onRegister, onNotif))
   const [multipleFile, setMultipleFile] = useState([]);
 
@@ -86,7 +87,7 @@ const Home = () => {
   };
 
   function sendBtdata(data) {
-    axios.post('http://192.168.43.57:5000/saveBTdata',
+    axios.post('http://' + config.ip + ':5000/saveBTdata',
       {
         userId: "84:10:0D:FA:87:33",
         btdata: data
@@ -208,41 +209,41 @@ const Home = () => {
       }
     }
   };
-function uriToBlob (uri){
+  function uriToBlob(uri) {
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
-      xhr.onload = function() {
+      xhr.onload = function () {
         // return the blob
         resolve(xhr.response);
       };
-      
-      xhr.onerror = function() {
+
+      xhr.onerror = function () {
         // something went wrong
         reject(new Error('uriToBlob failed'));
       };
       // this helps us get a blob
       xhr.responseType = 'blob';
       xhr.open('GET', uri, true);
-      
+
       xhr.send(null);
     });
   }
 
-  async function upload(){
+  async function upload() {
     const formData = new FormData();
-// formData.append('data', JSON.stringify(data));
+    // formData.append('data', JSON.stringify(data));
     var blb = await uriToBlob(multipleFile[0].uri)
     console.log(blb)
 
     // const storage = getStorage();
     // const storageRef = ref(storage, 'some-child');
-    
+
 
     const reference = storage().ref(multipleFile[0].name);
-    reference.put(blb).then((res)=>{
-          console.log(res);
-        });
-      }
+    reference.put(blb).then((res) => {
+      console.log(res);
+    });
+  }
 
   function onClickUpdate() {
     // notif.localNotif() 
@@ -257,7 +258,7 @@ function uriToBlob (uri){
           text: "OK",
           onPress: () => {
 
-            axios.post('http://192.168.43.57:5000/changeCStatus',
+            axios.post('http://' + config.ip + ':5000/changeCStatus',
               {
                 b_id: "78:20:0D:F1:82:20",
                 cstatus: status
@@ -292,40 +293,54 @@ function uriToBlob (uri){
     );
   }
   const [isModalVisible, setModalVisible] = useState(false);
-
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
-
+  
   return (
     <>
-    <View style={{ flex: 1 }}>
-      {/* <Button title="Show modal" onPress={toggleModal} /> */}
+      <View style={{ flex: 1 }}>
+        {/* <Button title="Show modal" onPress={toggleModal} /> */}
 
-      <Modal 
-      isVisible={isModalVisible}
-      onBackButtonPress={()=>{
-      toggleModal()
+        <Modal
+          isVisible={isModalVisible}
+          onBackButtonPress={() => {
+            toggleModal()
 
-      }}
-      >
-        <View style={{ height:hp(50) , backgroundColor:'white',padding:wp(5)}}>
-          {/* <Text>Hello!</Text> */}
-          <Text
-                style={{...material.headline}}
-                >
-                    Update Your covid Status
-          </Text>
+          }}
+        >
+          <View style={{ height: hp(50), backgroundColor: AppColor.cardBlue, padding: wp(5), borderRadius: 15 }}>
+            <View style={{ position: 'absolute', right: 0, top: 0 }}>
+              <Icon.Button name='cross'
+                iconStyle={{ marginRight: 0 }}
+                backgroundColor='transparent'
+                underlayColor='transparent'
+                size={40}
+                color={'#25B7D3'}
+                onPress={() => {
+                  toggleModal()
+                }}
+              // style={styles.button}                
+              >
+              </Icon.Button>
+            </View>
+            {/* <Text>Hello!</Text> */}
+            <Text
+              style={{ ...material.headline, marginTop: hp(3), textAlign: 'center' }}
+            >
+              Update Your covid Status
+            </Text>
 
-          <Text
-                style={{...material.subheading,marginTop:hp(2)}}
-                >
-                    Upload your covid test report
-                </Text>
-          <Button title="Upload" onPress={()=>{selectMultipleFile()}} />
-        </View>
-      </Modal>
-    </View>
+            <Text
+              style={{ ...material.subheading, marginTop: hp(2), textAlign: 'center' }}
+            >
+              1. Upload your covid test report
+            </Text>
+            <Button title="Upload" onPress={() => { selectMultipleFile() }} />
+          </View>
+        </Modal>
+      </View>
+
       <ScrollView
         contentContainerStyle={{ flexGrow: 1 }}
         //  contentContainerStyle={{ flexGrow: 1 }}
@@ -337,7 +352,21 @@ function uriToBlob (uri){
         <SafeAreaView
           style={styles.container}
         >
-           {pushnoti ? 
+          <View style={{ position: 'absolute', right: 0, top: 10 }}>
+            <Icon.Button name='info-with-circle'
+              backgroundColor='transparent'
+              underlayColor='transparent'
+              size={40}
+              color={'#25B7D3'}
+              onPress={() => {
+                toggleModal()
+              }}
+            // style={styles.button}                
+            >
+            </Icon.Button>
+          </View>
+
+          {pushnoti ?
             <View
               style={[styles.statusView, { backgroundColor: AppColor.BackgroundRed, borderRadius: 10 }]}
             >
@@ -354,7 +383,7 @@ function uriToBlob (uri){
                 A person who was in your contact recently, has updated their covid status as positive. So, If you feel some symptoms take necessary precautions.
               </Text>
             </View>
-             : 
+            :
             <View
               style={[styles.statusView, { backgroundColor: AppColor.BackgroundGreen, borderRadius: 10 }]}
             >
@@ -370,9 +399,9 @@ function uriToBlob (uri){
               >
                 All persons who were in your contacts recently are covid free.
               </Text>
-            </View> 
-}
-          
+            </View>
+          }
+
           <View
             style={[styles.statusView, { backgroundColor: AppColor.cardBlue, borderRadius: 10 }]}
           >
@@ -407,7 +436,7 @@ function uriToBlob (uri){
               style={[material.title, { marginBottom: hp(1) }]}
             // {fontSize:20,marginBottom:hp(1)}}
             >
-              Your Status: {status ? <Text style={[material.subheading,{color:AppColor.textRed}]}>Positive</Text> : <Text style={material.subheading}>Negative</Text> }
+              Your Status: {status ? <Text style={[material.subheading, { color: AppColor.textRed }]}>Positive</Text> : <Text style={material.subheading}>Negative</Text>}
             </Text>
             {/* <View style={{borderRadius:30}}> */}
             {/* <Button
@@ -419,18 +448,18 @@ function uriToBlob (uri){
               // style= {[{borderRadius:30}]}
               color={AppColor.namePink}
             /> */}
-              <Pressable 
-                onPress={()=>{
-                  
-                  // onClickUpdate()
-                  toggleModal()
-                }}
-                style={styles.button}                
-                >
-                  <Text
-                  style={{...material.subheading,fontWeight:'bold',color:"white"}}
-                  >Update Status</Text>
-                </Pressable>
+            <Pressable
+              onPress={() => {
+
+                // onClickUpdate()
+                toggleModal()
+              }}
+              style={styles.button}
+            >
+              <Text
+                style={{ ...material.subheading, fontWeight: 'bold', color: "white" }}
+              >Update Status</Text>
+            </Pressable>
             {/* </View> */}
           </View>
 
@@ -438,60 +467,60 @@ function uriToBlob (uri){
             style={styles.guideView}
           > */}
           <View
-          style={styles.guideView}
+            style={styles.guideView}
           >
-          <ImageBackground
-          
-            style={styles.bottomImage}
-            source={require('../Assets/plus.png')}
+            <ImageBackground
+
+              style={styles.bottomImage}
+              source={require('../Assets/plus.png')}
             >
-           </ImageBackground>
+            </ImageBackground>
 
-                <View
-                // style={{opacity:1}}
+            <View
+            // style={{opacity:1}}
 
-                >
-                  {/* <Image
+            >
+              {/* <Image
             style={styles.bottomImage}
             source={require('../Assets/plus.png')}
             /> */}
-                <Text
-                    style={[material.title, { textAlign: 'center', marginBottom: hp(0.5) }]}
-                  // { fontSize: 20, marginBottom: hp(0.5) }}
-                  >
-                    Precautions
-                  </Text>
+              <Text
+                style={[material.title, { textAlign: 'center', marginBottom: hp(0.5) }]}
+              // { fontSize: 20, marginBottom: hp(0.5) }}
+              >
+                Precautions
+              </Text>
 
-                  <Text
-                    style={[material.body1, {}]}
-                  // { fontSize: 12 }}
-                  >
-                    {`\u2022  `}
-                    Maintain a safe distance from others (at least 1 m), even if they don’t appear to be sick.
-                    {`\n\u2022  `}
-                    Wear a mask in public, especially indoors or when physical distancing is not possible.
-                    {`\n\u2022`}
-                    Choose open, well-ventilated spaces over closed ones. Open a window, if indoors.
-                    {`\n\u2022  `}
-                    Clean your hands often. Use soap and water, or an alcohol-based hand rub.
-                    {`\n\u2022  `}
-                    Get vaccinated when it’s your turn. Follow local guidance about vaccination.
-                    {`\n\u2022  `}
-                    Cover your nose and mouth with your bent elbow or a tissue when you cough or sneeze.
-                    {`\n\u2022  `}
-                    Stay home if you feel unwell.
+              <Text
+                style={[material.body1, {}]}
+              // { fontSize: 12 }}
+              >
+                {`\u2022  `}
+                Maintain a safe distance from others (at least 1 m), even if they don’t appear to be sick.
+                {`\n\u2022  `}
+                Wear a mask in public, especially indoors or when physical distancing is not possible.
+                {`\n\u2022  `}
+                Choose open, well-ventilated spaces over closed ones. Open a window, if indoors.
+                {`\n\u2022  `}
+                Clean your hands often. Use soap and water, or an alcohol-based hand rub.
+                {`\n\u2022  `}
+                Get vaccinated when it’s your turn. Follow local guidance about vaccination.
+                {`\n\u2022  `}
+                Cover your nose and mouth with your bent elbow or a tissue when you cough or sneeze.
+                {`\n\u2022  `}
+                Stay home if you feel unwell.
 
-                  </Text>
-                </View>
-       
+              </Text>
+            </View>
 
-         
-          
-        
+
+
+
+
 
           </View>
-          
-         
+
+
           {/* </View> */}
           {/* <PushController/> */}
         </SafeAreaView>
@@ -557,46 +586,46 @@ const styles = StyleSheet.create({
     borderRadius: 11 / 2,
     backgroundColor: AppColor.textGreen,
   },
-  button:{
-    backgroundColor:AppColor.ButtonPink,
-    alignItems:'center',
-    alignSelf:'center',
-      width: wp(40),
-      padding:wp(2),
-      borderRadius:25,
-      elevation: 5,
+  button: {
+    backgroundColor: AppColor.ButtonPink,
+    alignItems: 'center',
+    alignSelf: 'center',
+    width: wp(40),
+    padding: wp(2),
+    borderRadius: 25,
+    elevation: 5,
 
   },
-  bottomImage:{
+  bottomImage: {
     // width:wp(70),
-  //  //  height:hp(20),
-  //  position: 'absolute',
-  //  top:0,
-  // //  bottom: 0,
-  //  right: 0,
-  //  resizeMode: 'contain',
-  //  opacity:0.4,
-  //  aspectRatio: 1, // Your aspect ratio
- 
-   // left: 0,
+    //  //  height:hp(20),
+    //  position: 'absolute',
+    //  top:0,
+    // //  bottom: 0,
+    //  right: 0,
+    //  resizeMode: 'contain',
+    //  opacity:0.4,
+    //  aspectRatio: 1, // Your aspect ratio
+
+    // left: 0,
   },
-  bottomImage:{
-    width:wp(70),
-   //  height:hp(20),
-   position: 'absolute',
-  //  alignSelf: 'flex-start',
-  //  alignSelf: 'flex-end',
-   top:hp(5),
-  //  bottom: 0,
-  // alignSelf:'center',
-  left:wp(10),
-   right: 0,
-  // zIndex:-1,
-   resizeMode: 'contain',
-   opacity:0.15,
-   aspectRatio: 1, // Your aspect ratio
- 
-   // left: 0,
+  bottomImage: {
+    width: wp(70),
+    //  height:hp(20),
+    position: 'absolute',
+    //  alignSelf: 'flex-start',
+    //  alignSelf: 'flex-end',
+    top: hp(5),
+    //  bottom: 0,
+    // alignSelf:'center',
+    left: wp(10),
+    right: 0,
+    // zIndex:-1,
+    resizeMode: 'contain',
+    opacity: 0.15,
+    aspectRatio: 1, // Your aspect ratio
+
+    // left: 0,
   },
   // button:{
   //   marginTop:10
