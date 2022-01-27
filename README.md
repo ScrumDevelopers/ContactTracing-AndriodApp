@@ -20,8 +20,13 @@ Server Link- https://github.com/ScrumDevelopers/ContactTracing-dApp
 
 
 ## Screenshots
+<img src="https://user-images.githubusercontent.com/62262069/151412205-8c0215a6-c306-44b4-b2a4-24cde0a4e5c1.png" width="30%" height="100%">
+<img src="https://user-images.githubusercontent.com/62262069/151412274-a006e956-3db1-4013-9b45-039915e8c83d.png" width="30%" height="100%">
+<img src="https://user-images.githubusercontent.com/62262069/151412343-7ec5a380-6c54-4e4b-ab64-a7f10270abfa.png" width="30%" height="100%">
+<img src="https://user-images.githubusercontent.com/62262069/151412403-5eae0c4a-0d96-4cff-8e58-b7d6443b2284.png" width="30%" height="100%">
 
-![BTP project (2)](https://user-images.githubusercontent.com/62262069/151412205-8c0215a6-c306-44b4-b2a4-24cde0a4e5c1.png)
-![BTP project (3)](https://user-images.githubusercontent.com/62262069/151412274-a006e956-3db1-4013-9b45-039915e8c83d.png)
-![BTP project (4)](https://user-images.githubusercontent.com/62262069/151412343-7ec5a380-6c54-4e4b-ab64-a7f10270abfa.png)
-![BTP project (5)](https://user-images.githubusercontent.com/62262069/151412403-5eae0c4a-0d96-4cff-8e58-b7d6443b2284.png)
+<!-- 
+![BTP project (2)]()
+![BTP project (3)]()
+![BTP project (4)]()
+![BTP project (5)]() -->
