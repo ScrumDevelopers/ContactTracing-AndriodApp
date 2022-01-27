@@ -1,8 +1,9 @@
 # Contact Tracing D-App
 
-Server Link- https://github.com/ScrumDevelopers/ContactTracing-dApp
 
 ## Description
+Decentralized blockchain based application for contact tracing using Ethereum.
+Server Link- https://github.com/ScrumDevelopers/ContactTracing-dApp
 
 ## Features
 1. Users can register in the App
@@ -11,7 +12,7 @@ Server Link- https://github.com/ScrumDevelopers/ContactTracing-dApp
 
 ## Tech Stack
 
-* React
+* React Native
 * Express.js
 * Node.js
 * Solidity
